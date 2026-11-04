@@ -7,15 +7,15 @@
 :root{
   --bg:#f3f4f9; --surface:#ffffff; --fg:#1a1f36; --muted:#5a6080; --line:#dcdfeb;
   --accent:#2f4bc4; --pre:#a3aac6; --post:#c2346e;
-  --good:#2c7a5a; --mixed:#a86a12; --weak:#b23a3a;
+  --good:#2c7a5a; --mixed:#a86a12; --weak:#b23a3a; --enab:#1d7a83; --barr:#bf5a1e;
   --display:"Newsreader",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#12142a; --surface:#1b1e38; --fg:#e6e8f5; --muted:#9ba1c2; --line:#2e3357;
-  --accent:#8aa0ff; --pre:#5f6690; --post:#f06a9e; --good:#5cc495; --mixed:#e0a54e; --weak:#f07f7f; color-scheme:dark}}
+  --accent:#8aa0ff; --pre:#5f6690; --post:#f06a9e; --good:#5cc495; --mixed:#e0a54e; --weak:#f07f7f; --enab:#5cc3cb; --barr:#f0965f; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#12142a; --surface:#1b1e38; --fg:#e6e8f5; --muted:#9ba1c2; --line:#2e3357;
-  --accent:#8aa0ff; --pre:#5f6690; --post:#f06a9e; --good:#5cc495; --mixed:#e0a54e; --weak:#f07f7f; color-scheme:dark}
+  --accent:#8aa0ff; --pre:#5f6690; --post:#f06a9e; --good:#5cc495; --mixed:#e0a54e; --weak:#f07f7f; --enab:#5cc3cb; --barr:#f0965f; color-scheme:dark}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6}
 .wrap{max-width:820px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
 h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;line-height:1.2}
@@ -55,10 +55,43 @@ svg .row.sel .hl{fill:var(--accent);opacity:.08}
 .s-strong{color:var(--good)} .s-mod{color:var(--mixed)} .s-weak{color:var(--weak)}
 details summary{cursor:pointer;color:var(--accent);font-size:.88rem;font-weight:500}
 details ul{margin:8px 0 0;padding-left:18px;font-size:.88rem;color:var(--muted)}
-.quotes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
-blockquote{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
-blockquote p{font-family:var(--display);font-size:1.02rem;line-height:1.45}
-blockquote footer{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
+.finding{scroll-margin-top:24px}
+.enab{color:var(--enab)} .barr{color:var(--barr)}
+.tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+.matrix{width:100%;min-width:580px;border-collapse:collapse;font-size:.85rem}
+.matrix th{font-family:var(--mono);font-weight:500;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:0 10px 10px;vertical-align:bottom}
+.matrix th small{display:block;text-transform:none;letter-spacing:0;font-size:.7rem;opacity:.8}
+.matrix td{border-top:1px solid var(--line);padding:12px 10px;vertical-align:middle}
+.matrix td:first-child,.matrix th:first-child{padding-left:4px}
+.matrix tr{cursor:pointer}
+.matrix tr:hover td{background:color-mix(in srgb,var(--accent) 4%,transparent)}
+.matrix tr.sel td{background:color-mix(in srgb,var(--accent) 9%,transparent)}
+.matrix .col-sel{box-shadow:inset 1px 0 var(--accent),inset -1px 0 var(--accent)}
+.matrix th.col-sel{color:var(--accent);box-shadow:none}
+.tbtn{font:inherit;color:inherit;background:none;border:0;padding:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:3px}
+.tbtn b{font-family:var(--display);font-weight:600;font-size:1.02rem;color:var(--fg)}
+.tbtn span.sum{color:var(--muted);font-size:.82rem;line-height:1.35}
+.tbtn:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+tr.sel .tbtn b{color:var(--accent)}
+.cell{display:flex;flex-direction:column;gap:5px;min-width:64px}
+.bar{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:currentColor;border-radius:4px}
+.cnt{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--fg)}
+.cnt.zero{color:var(--muted)}
+.matrix td.tot .cnt{font-weight:500}
+.theme-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 16px}
+.theme-brief{border-left:3px solid currentColor;padding:4px 0 4px 14px;display:flex;flex-direction:column;gap:4px}
+.theme-brief p{color:var(--fg);font-size:.92rem}
+.theme-brief a{color:var(--accent);font-size:.85rem;font-weight:500;text-decoration:none}
+.theme-brief a:hover{text-decoration:underline}
+.quotes{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+blockquote{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px 14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+blockquote .mark{font-family:var(--display);font-size:3rem;line-height:1;height:22px;margin-top:-4px}
+blockquote p{font-family:var(--display);font-size:1.08rem;line-height:1.45;flex:1}
+blockquote footer{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;border-top:1px solid var(--line);padding-top:10px;font-size:.8rem}
+blockquote footer b{font-weight:500}
+blockquote footer span{color:var(--muted);font-family:var(--mono);font-size:.74rem}
+@media (prefers-reduced-motion:no-preference){blockquote{animation:qin .3s ease both}@keyframes qin{from{transform:translateY(4px)}to{transform:none}}}
 .empty{color:var(--muted);font-size:.9rem}
 @media (max-width:520px){.layer{grid-template-columns:1fr}.layer dt{padding-top:6px}}
 @media (prefers-reduced-motion:no-preference){svg circle,svg line.conn{transition:all .35s ease}}
@@ -102,7 +135,7 @@ blockquote footer{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
   <div class="eyebrow">KEQ 2 · What helped and hindered</div>
   <h2>Findings</h2>
 
-  <article class="finding">
+  <article class="finding" id="f-mentor">
     <h3>A consistent mentor mattered more than session frequency</h3>
     <dl class="layer">
       <dt>Observed</dt><dd>Griffith had three mentor changes during the year; the other sites had none. Griffith attendance (71%) was close to the other sites (78% and 80%), but its connectedness gain was about half.</dd>
@@ -116,7 +149,7 @@ blockquote footer{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
     </ul></details>
   </article>
 
-  <article class="finding">
+  <article class="finding" id="f-tasks">
     <h3>Practical activities opened the door to talking</h3>
     <dl class="layer">
       <dt>Observed</dt><dd>Sessions built around a task (cooking, bike repair, job applications) were mentioned in 19 of 24 participant interviews as the ones they valued most.</dd>
@@ -130,7 +163,7 @@ blockquote footer{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
     </ul></details>
   </article>
 
-  <article class="finding">
+  <article class="finding" id="f-transport">
     <h3>Transport limited who could take part</h3>
     <dl class="layer">
       <dt>Observed</dt><dd>Of the 24 participants who did not complete, 10 gave transport as a reason in exit calls. Most of these lived more than 20 km from the venue.</dd>
@@ -148,8 +181,16 @@ blockquote footer{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
 <section id="voices">
   <div class="eyebrow">Qualitative evidence</div>
   <h2>In their words</h2>
-  <div class="controls" id="theme-chips"></div>
-  <p class="note" id="quote-note"></p>
+  <p>Four themes came through most often across the 31 interviews. Two describe what helped young people engage and two describe what got in the way. The table shows how widely each theme was raised at each site; it counts people, not how strongly they felt.</p>
+  <div class="panel">
+    <div class="chart-wrap"><table class="matrix" id="matrix" aria-label="Interviewees raising each theme, by site"></table></div>
+    <p class="note" id="matrix-note"></p>
+  </div>
+  <div class="theme-head">
+    <p class="note" id="quote-note"></p>
+    <button class="chip" id="theme-reset" hidden>Show all themes</button>
+  </div>
+  <div id="theme-brief"></div>
   <div class="quotes" id="quotes"></div>
 </section>
 
@@ -168,6 +209,15 @@ const sites=[
   {id:"gri",name:"Griffith",n:37,conn:[2.8,3.1],well:[19.6,20.4]},
   {id:"alb",name:"Albury",n:36,conn:[3.0,3.7],well:[20.5,23.1]}
 ];
+const ivN={all:31,wag:10,gri:11,alb:10};
+const themes=[
+  {t:"Trusted adult",k:"enab",sum:"Feeling known and remembered by a mentor",c:{wag:8,gri:4,alb:8},f:"f-mentor",fl:"A consistent mentor mattered"},
+  {t:"Mentor change",k:"barr",sum:"Having to rebuild trust after a mentor left",c:{wag:0,gri:9,alb:0},f:"f-mentor",fl:"A consistent mentor mattered"},
+  {t:"Doing things",k:"enab",sum:"Shared tasks made it easier to talk",c:{wag:8,gri:7,alb:8},f:"f-tasks",fl:"Practical activities opened the door"},
+  {t:"Getting there",k:"barr",sum:"Distance and transport got in the way",c:{wag:3,gri:6,alb:2},f:"f-transport",fl:"Transport limited who could take part"}
+];
+const stance={enab:"Helped",barr:"Hindered"};
+const total=th=>th.c.wag+th.c.gri+th.c.alb;
 const quotes=[
   {t:"Trusted adult",s:"wag",who:"Participant, 15",q:"She actually remembered stuff I told her the week before. Nobody really does that."},
   {t:"Trusted adult",s:"alb",who:"Parent",q:"He talks about his mentor at dinner. That's new. He didn't talk about anyone at dinner."},
@@ -201,29 +251,47 @@ function drawChart(){
     el("circle",{cx:sx(a),cy:y,r:6,fill:"var(--pre)"},g);
     el("circle",{cx:sx(b),cy:y,r:6,fill:"var(--post)"},g);
     const d=el("text",{x:sx(b)+12,y:y+4,style:"fill:var(--fg)"},g);d.textContent="+"+(b-a).toFixed(measure==="conn"?2:1);
-    const pick=()=>{site=s.id;drawChart();drawQuotes()};
+    const pick=()=>{site=s.id;drawChart();drawMatrix();drawQuotes()};
     g.addEventListener("click",pick);
     g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}});
   });
   const s=sites.find(s=>s.id===site);
   document.getElementById("chart-note").textContent=(site==="all"?"Select a site to filter the quotes below. ":`Showing ${s.name}. Quotes below are filtered to this site. `)+"Mean scores for completers only; no comparison group.";
 }
-function drawChips(){
-  const box=document.getElementById("theme-chips");box.innerHTML="";
-  ["All",...new Set(quotes.map(q=>q.t))].forEach((t,i)=>{
-    const b=document.createElement("button");b.className="chip";b.id="chip-"+i;b.textContent=t;b.setAttribute("aria-pressed",t===theme);
-    b.onclick=()=>{theme=t;drawChips();drawQuotes()};box.appendChild(b);
-  });
+function cell(n,d,k,extra=""){
+  return `<td class="${k} ${extra}"><div class="cell"><div class="bar"><i style="width:${Math.round(n/d*100)}%"></i></div><span class="cnt${n?"":" zero"}">${n}/${d}</span></div></td>`;
 }
+function drawMatrix(){
+  const cols=sites.filter(s=>s.id!=="all");
+  const cs=id=>id===site?"col-sel":"";
+  let h=`<thead><tr><th>Theme</th>${cols.map(c=>`<th class="${cs(c.id)}">${c.name}<small>${ivN[c.id]} interviews</small></th>`).join("")}<th>All sites<small>${ivN.all} interviews</small></th></tr></thead><tbody>`;
+  themes.forEach((th,i)=>{
+    h+=`<tr class="${th.t===theme?"sel":""}" data-i="${i}"><td><button class="tbtn" id="theme-${i}" aria-pressed="${th.t===theme}"><span class="tag ${th.k}">${stance[th.k]}</span><b>${th.t}</b><span class="sum">${th.sum}</span></button></td>`
+      +cols.map(c=>cell(th.c[c.id],ivN[c.id],th.k,cs(c.id))).join("")
+      +cell(total(th),ivN.all,th.k,"tot")+`</tr>`;
+  });
+  const m=document.getElementById("matrix");m.innerHTML=h+"</tbody>";
+  m.querySelectorAll("tbody tr").forEach(r=>r.onclick=()=>{const t=themes[r.dataset.i].t;setTheme(theme===t?"All":t)});
+  document.getElementById("matrix-note").textContent="Select a theme to read its quotes. "+(site==="all"?"Selecting a site in the chart above highlights its column.":`${sites.find(s=>s.id===site).name} is highlighted from the chart above.`);
+}
+function setTheme(t){theme=t;drawMatrix();drawQuotes()}
+document.getElementById("theme-reset").onclick=()=>setTheme("All");
 function drawQuotes(){
   const box=document.getElementById("quotes");
   const list=quotes.filter(q=>(theme==="All"||q.t===theme)&&(site==="all"||q.s===site));
   const sName=sites.find(s=>s.id===site).name;
-  document.getElementById("quote-note").textContent=`${list.length} of ${quotes.length} selected quotes`+(site==="all"?"":` · ${sName} only`);
-  box.innerHTML=list.length?list.map(q=>`<blockquote><p>“${q.q}”</p><footer>${q.who} · ${sites.find(s=>s.id===q.s).name} · ${q.t}</footer></blockquote>`).join(""):`<p class="empty">No selected quotes match this site and theme.</p>`;
+  const th=themes.find(x=>x.t===theme);
+  document.getElementById("theme-reset").hidden=theme==="All";
+  document.getElementById("quote-note").textContent=`Showing ${list.length} of ${quotes.length} selected quotes`+(th?` · ${th.t}`:"")+(site==="all"?"":` · ${sName} only`);
+  const brief=document.getElementById("theme-brief");
+  if(th){
+    const per=sites.filter(s=>s.id!=="all").map(s=>`${s.name} ${th.c[s.id]} of ${ivN[s.id]}`).join(", ");
+    brief.innerHTML=`<div class="theme-brief ${th.k}"><span class="tag">${stance[th.k]} · ${th.t}</span><p>Raised by ${total(th)} of ${ivN.all} interviewees (${per}).</p><a href="#${th.f}">Related finding: ${th.fl} ↑</a></div>`;
+  } else brief.innerHTML="";
+  box.innerHTML=list.length?list.map(q=>{const k=themes.find(x=>x.t===q.t).k;return `<blockquote><span class="tag ${k}">${stance[k]} · ${q.t}</span><span class="mark ${k}" aria-hidden="true">“</span><p>${q.q}</p><footer><b>${q.who}</b><span>${sites.find(s=>s.id===q.s).name}</span></footer></blockquote>`}).join(""):`<p class="empty">No selected quotes match this site and theme. Try another site in the chart, or show all themes.</p>`;
 }
 document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{
   measure=b.dataset.m;document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawChart();
 });
-drawChart();drawChips();drawQuotes();
+drawChart();drawMatrix();drawQuotes();
 </script>
