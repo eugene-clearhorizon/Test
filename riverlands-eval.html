@@ -1,0 +1,229 @@
+<title>Riverlands Youth Connect Evaluation</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single reading column, report order (summary → KEQ findings → evidence), interactive panels inline */
+:root{
+  --bg:#f3f4f9; --surface:#ffffff; --fg:#1a1f36; --muted:#5a6080; --line:#dcdfeb;
+  --accent:#2f4bc4; --pre:#a3aac6; --post:#c2346e;
+  --good:#2c7a5a; --mixed:#a86a12; --weak:#b23a3a;
+  --display:"Newsreader",Georgia,serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12142a; --surface:#1b1e38; --fg:#e6e8f5; --muted:#9ba1c2; --line:#2e3357;
+  --accent:#8aa0ff; --pre:#5f6690; --post:#f06a9e; --good:#5cc495; --mixed:#e0a54e; --weak:#f07f7f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12142a; --surface:#1b1e38; --fg:#e6e8f5; --muted:#9ba1c2; --line:#2e3357;
+  --accent:#8aa0ff; --pre:#5f6690; --post:#f06a9e; --good:#5cc495; --mixed:#e0a54e; --weak:#f07f7f; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--display);font-weight:600;text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:2.1rem} h2{font-size:1.45rem} h3{font-size:1.1rem}
+p{margin:0;max-width:66ch}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.flag{display:inline-block;font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);padding:2px 8px;border-radius:3px;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--line);padding-bottom:28px}
+section{display:flex;flex-direction:column;gap:16px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;font-size:.85rem}
+.meta div{display:flex;flex-direction:column}
+.meta b{font-family:var(--mono);font-weight:500;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.meta span{color:var(--muted)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button,.chip{font:inherit;font-size:.85rem;background:var(--surface);color:var(--fg);border:0;padding:6px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+.chip{border:1px solid var(--line);border-radius:999px}
+.chip[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);font-weight:500}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.chart-wrap{overflow-x:auto}
+svg text{fill:var(--muted);font-family:var(--mono);font-size:11px}
+svg .lbl{fill:var(--fg);font-family:var(--body);font-size:13px}
+svg .row{cursor:pointer}
+svg .row:hover .lbl,svg .row.sel .lbl{fill:var(--accent);font-weight:600}
+svg .row.sel .hl{fill:var(--accent);opacity:.08}
+.legend{display:flex;gap:16px;font-size:.8rem;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.note{font-size:.85rem;color:var(--muted)}
+.finding{border-top:1px solid var(--line);padding-top:16px;display:flex;flex-direction:column;gap:10px}
+.layer{display:grid;grid-template-columns:110px 1fr;gap:4px 16px}
+.layer dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.layer dd{margin:0;min-width:0}
+.pill{font-family:var(--mono);font-size:.72rem;padding:2px 8px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.s-strong{color:var(--good)} .s-mod{color:var(--mixed)} .s-weak{color:var(--weak)}
+details summary{cursor:pointer;color:var(--accent);font-size:.88rem;font-weight:500}
+details ul{margin:8px 0 0;padding-left:18px;font-size:.88rem;color:var(--muted)}
+.quotes{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+blockquote{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+blockquote p{font-family:var(--display);font-size:1.02rem;line-height:1.45}
+blockquote footer{font-size:.78rem;color:var(--muted);font-family:var(--mono)}
+.empty{color:var(--muted);font-size:.9rem}
+@media (max-width:520px){.layer{grid-template-columns:1fr}.layer dt{padding-top:6px}}
+@media (prefers-reduced-motion:no-preference){svg circle,svg line.conn{transition:all .35s ease}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="flag">Hypothetical example · all data invented</span>
+  <h1>Riverlands Youth Connect: end-of-program evaluation</h1>
+  <p>A 12-month mentoring program for young people aged 14 to 17 across three Riverina sites, run from February to December 2026. This short report covers outcomes for completing participants and what shaped them.</p>
+  <div class="meta">
+    <div><b>142</b><span>young people enrolled</span></div>
+    <div><b>118</b><span>completed (83%)</span></div>
+    <div><b>31</b><span>interviews (participants, mentors, parents)</span></div>
+    <div><b>3</b><span>sites</span></div>
+  </div>
+</header>
+
+<section>
+  <div class="eyebrow">Summary</div>
+  <p>Completing participants reported higher connectedness and wellbeing at the end of the program than at the start, with an average gain of 0.57 on the five-point connectedness scale. The gains were similar in Wagga Wagga and Albury and noticeably smaller in Griffith. Interviews point to mentor continuity as the most likely explanation for that difference, although the design cannot rule out other site factors.</p>
+</section>
+
+<section id="quant">
+  <div class="eyebrow">KEQ 1 · Outcomes</div>
+  <h2>How much did things change?</h2>
+  <div class="panel">
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Measure">
+        <button id="m-conn" aria-pressed="true" data-m="conn">Connectedness (1–5)</button>
+        <button id="m-well" aria-pressed="false" data-m="well">Wellbeing (SWEMWBS 7–35)</button>
+      </div>
+    </div>
+    <div class="chart-wrap"><svg id="chart" viewBox="0 0 640 230" width="100%" role="img" aria-label="Pre and post scores by site"></svg></div>
+    <div class="legend"><span><i style="background:var(--pre)"></i>Start (Feb)</span><span><i style="background:var(--post)"></i>End (Dec)</span></div>
+    <p class="note" id="chart-note"></p>
+  </div>
+</section>
+
+<section id="findings">
+  <div class="eyebrow">KEQ 2 · What helped and hindered</div>
+  <h2>Findings</h2>
+
+  <article class="finding">
+    <h3>A consistent mentor mattered more than session frequency</h3>
+    <dl class="layer">
+      <dt>Observed</dt><dd>Griffith had three mentor changes during the year; the other sites had none. Griffith attendance (71%) was close to the other sites (78% and 80%), but its connectedness gain was about half.</dd>
+      <dt>Interpretation</dt><dd>Participants and parents at Griffith described having to "start again" with new mentors. This fits the pattern in the scores, though Griffith also differs in other ways (more participants travelling from outlying farms).</dd>
+      <dt>Judgement</dt><dd>Mentor retention is likely a key condition for the program to work. <span class="pill s-mod">Moderate evidence</span></dd>
+    </dl>
+    <details><summary>Show evidence base</summary><ul>
+      <li>Program records: mentor rosters by site, Feb–Dec</li>
+      <li>Pre/post survey, n=37 Griffith completers</li>
+      <li>9 of 11 Griffith interviewees raised mentor change unprompted</li>
+    </ul></details>
+  </article>
+
+  <article class="finding">
+    <h3>Practical activities opened the door to talking</h3>
+    <dl class="layer">
+      <dt>Observed</dt><dd>Sessions built around a task (cooking, bike repair, job applications) were mentioned in 19 of 24 participant interviews as the ones they valued most.</dd>
+      <dt>Interpretation</dt><dd>Young people described these as lower pressure than "sit-down chats", and mentors said harder conversations often came up while working on something.</dd>
+      <dt>Judgement</dt><dd>Task-based sessions appear to support engagement. <span class="pill s-strong">Strong evidence</span></dd>
+    </dl>
+    <details><summary>Show evidence base</summary><ul>
+      <li>24 participant interviews across all sites</li>
+      <li>Mentor reflection logs (412 sessions)</li>
+      <li>Consistent across sites and age groups</li>
+    </ul></details>
+  </article>
+
+  <article class="finding">
+    <h3>Transport limited who could take part</h3>
+    <dl class="layer">
+      <dt>Observed</dt><dd>Of the 24 participants who did not complete, 10 gave transport as a reason in exit calls. Most of these lived more than 20 km from the venue.</dd>
+      <dt>Interpretation</dt><dd>The program may be reaching town-based young people more reliably than those in outlying areas.</dd>
+      <dt>Judgement</dt><dd>Plausible but not established. Exit call coverage was incomplete. <span class="pill s-weak">Limited evidence</span></dd>
+    </dl>
+    <details><summary>Show evidence base</summary><ul>
+      <li>Exit calls reached 15 of 24 non-completers</li>
+      <li>Enrolment postcodes (distance estimated)</li>
+      <li>No data from young people who were referred but never enrolled</li>
+    </ul></details>
+  </article>
+</section>
+
+<section id="voices">
+  <div class="eyebrow">Qualitative evidence</div>
+  <h2>In their words</h2>
+  <div class="controls" id="theme-chips"></div>
+  <p class="note" id="quote-note"></p>
+  <div class="quotes" id="quotes"></div>
+</section>
+
+<section>
+  <div class="eyebrow">KEQ 3 · Worth continuing?</div>
+  <h2>Overall judgement</h2>
+  <p>On balance, the evidence supports continuing the program. The outcome gains are modest but consistent at two of the three sites, and the main weakness identified (mentor turnover) is something the program can act on. The case would be stronger with a comparison group and follow-up beyond the end of the program, since we don't yet know whether the gains hold.</p>
+  <p class="note">Survey results cover completers only, so they likely overstate the average effect for everyone who enrolled.</p>
+</section>
+</div>
+
+<script>
+const sites=[
+  {id:"all",name:"All sites",n:118,conn:[2.90,3.47],well:[20.1,22.1]},
+  {id:"wag",name:"Wagga Wagga",n:45,conn:[2.9,3.6],well:[20.1,22.8]},
+  {id:"gri",name:"Griffith",n:37,conn:[2.8,3.1],well:[19.6,20.4]},
+  {id:"alb",name:"Albury",n:36,conn:[3.0,3.7],well:[20.5,23.1]}
+];
+const quotes=[
+  {t:"Trusted adult",s:"wag",who:"Participant, 15",q:"She actually remembered stuff I told her the week before. Nobody really does that."},
+  {t:"Trusted adult",s:"alb",who:"Parent",q:"He talks about his mentor at dinner. That's new. He didn't talk about anyone at dinner."},
+  {t:"Mentor change",s:"gri",who:"Participant, 16",q:"By the third one I just didn't bother. You tell them everything and then they leave."},
+  {t:"Mentor change",s:"gri",who:"Mentor",q:"I came in mid-year and could tell the kids had their guard up. It took me two months to get anywhere."},
+  {t:"Doing things",s:"alb",who:"Participant, 14",q:"Fixing the bike was the best one. We just talked the whole time and I didn't notice."},
+  {t:"Doing things",s:"wag",who:"Mentor",q:"The real conversations happened over the stove, not when we sat down to have them."},
+  {t:"Getting there",s:"gri",who:"Parent",q:"It's a forty minute drive each way. Some weeks I just couldn't do it with work."},
+  {t:"Getting there",s:"wag",who:"Participant, 17",q:"I missed heaps in winter because the bus doesn't run late enough."}
+];
+let measure="conn", site="all", theme="All";
+const svg=document.getElementById("chart");
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent&&parent.appendChild(e);return e}
+function drawChart(){
+  svg.innerHTML="";
+  const [min,max,step]=measure==="conn"?[2.5,4,0.5]:[18,24,2];
+  const x0=150,x1=610,rowH=44,top=20;
+  const sx=v=>x0+(v-min)/(max-min)*(x1-x0);
+  for(let v=min;v<=max+1e-9;v+=step){
+    el("line",{x1:sx(v),x2:sx(v),y1:top-6,y2:top+rowH*sites.length,stroke:"var(--line)"},svg);
+    const t=el("text",{x:sx(v),y:top+rowH*sites.length+16,"text-anchor":"middle"},svg);t.textContent=measure==="conn"?v.toFixed(1):v;
+  }
+  sites.forEach((s,i)=>{
+    const y=top+i*rowH+rowH/2, [a,b]=s[measure];
+    const g=el("g",{class:"row"+(s.id===site?" sel":""),tabindex:0,role:"button","aria-label":`${s.name}: ${a} to ${b}`},svg);
+    el("rect",{class:"hl",x:0,y:y-rowH/2,width:640,height:rowH,fill:"transparent",rx:4},g);
+    const l=el("text",{class:"lbl",x:8,y:y+4},g);l.textContent=s.name;
+    const n=el("text",{x:8,y:y+18},g);n.textContent="n="+s.n;
+    el("line",{class:"conn",x1:sx(a),x2:sx(b),y1:y,y2:y,stroke:"var(--muted)","stroke-width":2,opacity:.5},g);
+    el("circle",{cx:sx(a),cy:y,r:6,fill:"var(--pre)"},g);
+    el("circle",{cx:sx(b),cy:y,r:6,fill:"var(--post)"},g);
+    const d=el("text",{x:sx(b)+12,y:y+4,style:"fill:var(--fg)"},g);d.textContent="+"+(b-a).toFixed(measure==="conn"?2:1);
+    const pick=()=>{site=s.id;drawChart();drawQuotes()};
+    g.addEventListener("click",pick);
+    g.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}});
+  });
+  const s=sites.find(s=>s.id===site);
+  document.getElementById("chart-note").textContent=(site==="all"?"Select a site to filter the quotes below. ":`Showing ${s.name}. Quotes below are filtered to this site. `)+"Mean scores for completers only; no comparison group.";
+}
+function drawChips(){
+  const box=document.getElementById("theme-chips");box.innerHTML="";
+  ["All",...new Set(quotes.map(q=>q.t))].forEach((t,i)=>{
+    const b=document.createElement("button");b.className="chip";b.id="chip-"+i;b.textContent=t;b.setAttribute("aria-pressed",t===theme);
+    b.onclick=()=>{theme=t;drawChips();drawQuotes()};box.appendChild(b);
+  });
+}
+function drawQuotes(){
+  const box=document.getElementById("quotes");
+  const list=quotes.filter(q=>(theme==="All"||q.t===theme)&&(site==="all"||q.s===site));
+  const sName=sites.find(s=>s.id===site).name;
+  document.getElementById("quote-note").textContent=`${list.length} of ${quotes.length} selected quotes`+(site==="all"?"":` · ${sName} only`);
+  box.innerHTML=list.length?list.map(q=>`<blockquote><p>“${q.q}”</p><footer>${q.who} · ${sites.find(s=>s.id===q.s).name} · ${q.t}</footer></blockquote>`).join(""):`<p class="empty">No selected quotes match this site and theme.</p>`;
+}
+document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{
+  measure=b.dataset.m;document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b));drawChart();
+});
+drawChart();drawChips();drawQuotes();
+</script>
